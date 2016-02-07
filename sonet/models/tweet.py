@@ -1,10 +1,18 @@
+from middleware.database import db
+
 class Tweet(object):
     """docstring for Tweet"""
 
     def __str__(self):
         return self.text.encode('utf8')
 
-    def tweet_to_class(self, tweet):
+    def tweet_to_json(self):
+        return self.__dict__
+
+    def tweet_to_mongo(self):
+        tweet = self.tweet_to_json()
+
+    def tweet_to_class(self, tweet, article_url):
         self.id = tweet['id']
         self.text = tweet['text']
         self.meta['favorite_count'] = tweet['favorite_count']
@@ -18,7 +26,9 @@ class Tweet(object):
         self.user['time_zone'] = tweet['user']['time_zone']
         self.user['lang'] = tweet['user']['lang']
 
-    def __init__(self, tweet):
+        self.article_url = article_url
+
+    def __init__(self, tweet, article_url):
         super(Tweet, self).__init__()
 
         # Basic information about the tweet
@@ -27,9 +37,11 @@ class Tweet(object):
         self.meta = {}
         self.coordinates = None
         self.language = ""
+        self.article_url = ""
 
         # User information about the tweet
         self.user = {}
 
         # Convert a single tweet into a Tweet class instance
-        self.tweet_to_class(tweet)
+        self.tweet_to_class(tweet, article_url)
+        self.tweet_to_mongo()

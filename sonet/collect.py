@@ -15,4 +15,4 @@ def collect_for_url(url, title):
     tweets, success = twitter.search_tweets([title, url])
     if success:
         for single_tweet in tweets:
-            print Tweet(single_tweet)
+            tweet = Tweet(single_tweet, url)
