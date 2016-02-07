@@ -1,7 +1,11 @@
 from middleware.database import db
 
+
 class Tweet(object):
     """docstring for Tweet"""
+
+    def __repr__(self):
+        return '<Tweet by {0}>'.format(self.user['id'])
 
     def __str__(self):
         return self.text.encode('utf8')
