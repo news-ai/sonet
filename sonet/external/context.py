@@ -30,9 +30,7 @@ def get_article_urls():
     r = requests.get('https://context.newsai.org/api/articles/',
                      headers=headers, verify=False)
     data = json.loads(r.text)
-    urls = []
+    articles = []
     for article in data['results']:
-        urls.append((article['name'], article['url']))
-    return urls
-
-get_article_urls()
+        articles.append((article['name'], article['url']))
+    return articles

@@ -1,11 +1,18 @@
 from external import context, twitter
+from models.tweet import Tweet
+
+import json
 
 
 def initialize():
-    print context.get_article_urls()
+    articles = context.get_article_urls()
+    if len(articles) > 0:
+        return articles
+    return False
 
 
-def begin_collection(url, title):
-    tweets = twitter.search_tweets([title, url])
-    for tweet in tweets:
-        print tweet
+def collect_for_url(url, title):
+    tweets, success = twitter.search_tweets([title, url])
+    if success:
+        for single_tweet in tweets:
+            print Tweet(single_tweet)

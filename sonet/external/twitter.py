@@ -17,10 +17,10 @@ def search_tweets(topics):
     try:
         tso = TwitterSearchOrder()
         tso.set_keywords(topics)
-        tso.set_include_entities(False)
-        return ts.search_tweets_iterable(tso)
+        tso.set_include_entities(True)
+        return (ts.search_tweets_iterable(tso), True)
     except TwitterSearchException as e:  # take care of all those ugly errors if there are some
-        print(e)
+        return (e, False)
 
 
 def stream_tweets(topics):
