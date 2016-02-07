@@ -21,3 +21,7 @@ def search_tweets(topics):
         return ts.search_tweets_iterable(tso)
     except TwitterSearchException as e:  # take care of all those ugly errors if there are some
         print(e)
+
+
+def stream_tweets(topics):
+    return topics
