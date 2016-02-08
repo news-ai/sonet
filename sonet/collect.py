@@ -1,5 +1,6 @@
 from external import context, twitter
 from models.tweet import Tweet
+from middleware import database
 
 import json
 
@@ -11,8 +12,10 @@ def initialize():
     return False
 
 
-def collect_for_url(url, title):
-    tweets, success = twitter.search_tweets([title, url])
-    if success:
-        for single_tweet in tweets:
-            tweet = Tweet(single_tweet, url)
+# def collect_for_url(url, title):
+#     tweets, success = twitter.search_tweets([title, url])
+#     if success:
+#         for single_tweet in tweets:
+#             tweet = Tweet(single_tweet, url)
+#             tweet.tweet_to_class(single_tweet, url)
+#             database.tweet_to_mongo(tweet)

@@ -32,5 +32,6 @@ def get_article_urls():
     data = json.loads(r.text)
     articles = []
     for article in data['results']:
-        articles.append((article['name'], article['url']))
+        articles.append((article['url'].encode('utf8'),
+                         article['name'].encode('utf8')))
     return articles

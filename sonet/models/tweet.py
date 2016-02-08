@@ -1,4 +1,5 @@
 from middleware.database import db
+import json
 
 
 class Tweet(object):
@@ -10,11 +11,8 @@ class Tweet(object):
     def __str__(self):
         return self.text.encode('utf8')
 
-    def tweet_to_json(self):
+    def tweet_to_dict(self):
         return self.__dict__
-
-    def tweet_to_mongo(self):
-        tweet = self.tweet_to_json()
 
     def tweet_to_class(self, tweet, article_url):
         self.id = tweet['id']
@@ -45,7 +43,3 @@ class Tweet(object):
 
         # User information about the tweet
         self.user = {}
-
-        # Convert a single tweet into a Tweet class instance
-        self.tweet_to_class(tweet, article_url)
-        self.tweet_to_mongo()
