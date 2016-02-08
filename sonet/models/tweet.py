@@ -1,4 +1,3 @@
-from middleware.database import db
 import json
 
 
@@ -19,7 +18,7 @@ class Tweet(object):
         self.text = tweet['text']
         self.meta['favorite_count'] = tweet['favorite_count']
         self.meta['retweet_count'] = tweet['retweet_count']
-        self.coordinates = tweet['coordinates']
+        self.location = tweet['coordinates']
         self.language = tweet['lang']
 
         self.user['id'] = tweet['user']['id']
@@ -37,7 +36,7 @@ class Tweet(object):
         self.id = 0
         self.text = ""
         self.meta = {}
-        self.coordinates = None
+        self.location = None
         self.language = ""
         self.article_url = ""
 

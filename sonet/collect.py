@@ -1,5 +1,6 @@
 from external import context, twitter
 from models.tweet import Tweet
+from middleware.esclient import add_tweet_to_elastic
 
 import json
 
@@ -17,3 +18,4 @@ def collect_for_url(url, title):
         for single_tweet in tweets:
             tweet = Tweet(single_tweet, url)
             tweet.tweet_to_class(single_tweet, url)
+            add_tweet_to_elastic(tweet.tweet_to_dict())
