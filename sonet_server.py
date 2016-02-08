@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from sonet import collect
-from middleware import database
 
 
 def begin_collecting(articles):

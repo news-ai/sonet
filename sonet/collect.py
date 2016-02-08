@@ -1,6 +1,5 @@
 from external import context, twitter
 from models.tweet import Tweet
-from middleware import database
 
 import json
 
@@ -18,4 +17,3 @@ def collect_for_url(url, title):
         for single_tweet in tweets:
             tweet = Tweet(single_tweet, url)
             tweet.tweet_to_class(single_tweet, url)
-            database.tweet_to_mongo(tweet)
