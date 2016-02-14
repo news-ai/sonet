@@ -39,6 +39,7 @@ class Tweet(object):
         self.location = None
         self.language = ""
         self.article_url = ""
+        self.similar_tweets = 0
 
         # User information about the tweet
         self.user = {}

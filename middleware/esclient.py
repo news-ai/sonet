@@ -1,3 +1,4 @@
+import re
 import requests
 import json
 from elasticsearch import Elasticsearch, RequestsHttpConnection
@@ -15,9 +16,26 @@ es = Elasticsearch(
 )
 
 
+def es_link_clean(text):
+    text = re.sub(r"(?:\@|https?\://)\S+", "", text)
+    text = re.sub(r'[^\w]', ' ', text)
+    return text
+
+
+def find_similar_tweets_in_elastic(elastic_data):
+    clean_link = es_link_clean(elastic_data['text'])
+    es_data = es.search(index='twitter', doc_type='tweet', body={
+                        "query": {"match_all": {}}}, q=clean_link)
+    if es_data['hits']['total'] > 0:
+        return (True, es_data)
+    else:
+        return (False, None)
+
+
 def add_tweet_to_elastic(elastic_data):
-    headers = {'content-type': 'application/json'}
-    url = 'https://knowledge-elastic-1.newsai.org/twitter/tweet'
-    data = requests.post(url, data=json.dumps(
-        elastic_data), headers=headers, verify=False)
-    print data
+    found_similar_tweet, tweets = find_similar_tweets_in_elastic(elastic_data)
+    if found_similar_tweet:
+        print 'similar tweet found'
+    else:
+        res = es.index(index="twitter", doc_type='tweet', id=1, body=elastic_data)
+        print res

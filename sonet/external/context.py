@@ -22,10 +22,12 @@ def get_article_urls():
     token = data['token']
 
     headers = {
-        'content-type': 'application/json',
-        'accept': 'application/json',
-        'authorization': 'JWT ' + token
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + token
     }
+
+    print token
 
     r = requests.get('https://context.newsai.org/api/articles/',
                      headers=headers, verify=False)
