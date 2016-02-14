@@ -1,6 +1,7 @@
 import re
 import requests
 import json
+from difflib import SequenceMatcher
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 
 from .config import ELASTIC_USER, ELASTIC_PASSWORD
@@ -22,6 +23,10 @@ def es_link_clean(text):
     return text
 
 
+def text_similarity(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+
 def find_similar_tweets_in_elastic(elastic_data):
     clean_link = es_link_clean(elastic_data['text'])
     es_data = es.search(index='twitter', doc_type='tweet', body={
@@ -32,10 +37,25 @@ def find_similar_tweets_in_elastic(elastic_data):
         return (False, None)
 
 
+def has_tweet_been_added(elastic_data):
+    es_data = es.search(index='twitter', doc_type='tweet', body={
+                        "query": {"match_all": {}}}, q=elastic_data['id'])
+
 def add_tweet_to_elastic(elastic_data):
     found_similar_tweet, tweets = find_similar_tweets_in_elastic(elastic_data)
+    to_add = True
     if found_similar_tweet:
-        print 'similar tweet found'
-    else:
-        res = es.index(index="twitter", doc_type='tweet', id=1, body=elastic_data)
-        print res
+        if 'hits' in tweets and 'hits' in tweets['hits']:
+            similarity = text_similarity(tweets['hits']['hits'][0]['_source'][
+                'text'], elastic_data['text'])
+            if similarity > 0.70:
+                new_data = tweets['hits']['hits'][0]['_source']
+                new_data['id'].append(elastic_data['id'][0])
+                new_data['similar_tweets'] += 1
+                new_data['meta']['retweet_count'] += elastic_data['meta']['retweet_count']
+                new_data['meta']['favorite_count'] += elastic_data['meta']['favorite_count']
+                new_data['user']['followers_count'] += elastic_data['user']['followers_count']
+                res = es.index(index="twitter", doc_type='tweet', id=tweets['hits']['hits'][0]['_id'], body=new_data)
+                to_add = False
+    if to_add:
+        res = es.index(index="twitter", doc_type='tweet', body=elastic_data)

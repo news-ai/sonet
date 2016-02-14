@@ -14,7 +14,7 @@ class Tweet(object):
         return self.__dict__
 
     def tweet_to_class(self, tweet, article_url):
-        self.id = tweet['id']
+        self.id = [tweet['id']]
         self.text = tweet['text']
         self.meta['favorite_count'] = tweet['favorite_count']
         self.meta['retweet_count'] = tweet['retweet_count']
@@ -33,7 +33,7 @@ class Tweet(object):
         super(Tweet, self).__init__()
 
         # Basic information about the tweet
-        self.id = 0
+        self.id = []
         self.text = ""
         self.meta = {}
         self.location = None
