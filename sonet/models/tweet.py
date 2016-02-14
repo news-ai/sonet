@@ -14,18 +14,18 @@ class Tweet(object):
         return self.__dict__
 
     def tweet_to_class(self, tweet, article_url):
-        self.id = [tweet['id']]
+        self.id = [str(tweet['id'])]
         self.text = tweet['text']
         self.meta['favorite_count'] = tweet['favorite_count']
         self.meta['retweet_count'] = tweet['retweet_count']
         self.location = tweet['coordinates']
         self.language = tweet['lang']
 
-        self.user['id'] = tweet['user']['id']
-        self.user['verified'] = tweet['user']['verified']
-        self.user['followers_count'] = tweet['user']['followers_count']
-        self.user['time_zone'] = tweet['user']['time_zone']
-        self.user['lang'] = tweet['user']['lang']
+        self.initial_user['id'] = tweet['user']['id']
+        self.initial_user['verified'] = tweet['user']['verified']
+        self.initial_user['followers_count'] = tweet['user']['followers_count']
+        self.initial_user['time_zone'] = tweet['user']['time_zone']
+        self.initial_user['lang'] = tweet['user']['lang']
 
         self.article_url = article_url
 
@@ -42,4 +42,4 @@ class Tweet(object):
         self.similar_tweets = 0
 
         # User information about the tweet
-        self.user = {}
+        self.initial_user = {}
