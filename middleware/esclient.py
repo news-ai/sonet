@@ -3,8 +3,9 @@ import requests
 import json
 from difflib import SequenceMatcher
 from elasticsearch import Elasticsearch, RequestsHttpConnection
+from middleware.log import logger
 
-from .config import ELASTIC_USER, ELASTIC_PASSWORD
+from .config import ELASTIC_USER, ELASTIC_PASSWORD, EXTENSIVE_LOG
 
 host = 'knowledge-elastic-1.newsai.org'
 
@@ -47,6 +48,9 @@ def has_tweet_been_added(elastic_data):
 
 
 def add_tweet_to_elastic(elastic_data):
+    if EXTENSIVE_LOG:
+        logger.debug('Adding tweet: ' + elastic_data['title'])
+
     if not has_tweet_been_added(elastic_data):
         found_similar_tweet, tweets = find_similar_tweets_in_elastic(
             elastic_data)
