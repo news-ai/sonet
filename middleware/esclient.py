@@ -40,7 +40,7 @@ def find_similar_tweets_in_elastic(elastic_data):
 def has_tweet_been_added(elastic_data):
     es_data = es.search(index='twitter', doc_type='tweet', body={
                         "query": {"match_all": {}}}, q=elastic_data['id'])
-    if es_data['hits']['total'] > 0:
+    if 'hits' in es_data and 'total' in es_data['hits'] and es_data['hits']['total'] > 0:
         return True
     else:
         return False
@@ -48,7 +48,8 @@ def has_tweet_been_added(elastic_data):
 
 def add_tweet_to_elastic(elastic_data):
     if not has_tweet_been_added(elastic_data):
-        found_similar_tweet, tweets = find_similar_tweets_in_elastic(elastic_data)
+        found_similar_tweet, tweets = find_similar_tweets_in_elastic(
+            elastic_data)
         to_add = True
         if found_similar_tweet:
             if 'hits' in tweets and 'hits' in tweets['hits']:
@@ -66,6 +67,5 @@ def add_tweet_to_elastic(elastic_data):
                                    'hits']['hits'][0]['_id'], body=new_data)
                     to_add = False
         if to_add:
-            res = es.index(index="twitter", doc_type='tweet', body=elastic_data)
-    else:
-        print 'Tweet has already been added'
+            res = es.index(index="twitter", doc_type='tweet',
+                           body=elastic_data)

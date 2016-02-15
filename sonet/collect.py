@@ -7,7 +7,6 @@ import json
 
 def initialize():
     articles = context.get_article_urls()
-    print articles
     if len(articles) > 0:
         return articles
     return False

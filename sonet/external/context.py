@@ -27,8 +27,6 @@ def get_article_urls():
         'Authorization': 'Bearer ' + token
     }
 
-    print token
-
     r = requests.get('https://context.newsai.org/api/articles/',
                      headers=headers, verify=False)
     data = json.loads(r.text)
