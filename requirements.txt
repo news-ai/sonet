@@ -18,5 +18,5 @@ singledispatch==3.4.0.3
 six==1.10.0
 tornado==4.3
 TwitterSearch==1.0.1
-urllib3==1.14
+urllib3==1.26.5
 wheel==0.24.0
