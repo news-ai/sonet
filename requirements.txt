@@ -1,6 +1,6 @@
 backports-abc==0.4
 backports.ssl-match-hostname==3.5.0.1
-certifi==2015.11.20.1
+certifi==2022.12.7
 cffi==1.5.0
 cryptography==1.2.2
 elasticsearch==2.2.0
